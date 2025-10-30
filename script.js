@@ -1,5 +1,3 @@
-
-
 const LS_KEY = 'meditrack_config_v1';
 const LS_LOCAL_HISTORY = 'meditrack_local_history_v1';
 const LS_LOCAL_SCHEDULE = 'meditrack_local_schedule_v1';
