@@ -1,1 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MEDITRACK — Medicine Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>MEDITRACK</h1>
+      <p class="subtitle">Simple medicine schedule, history & stats</p>
+    </div>
+    <div class="clock" id="clock">--:--</div>
+  </header>
 
+
+  <main class="container">
+    <section class="config card">
+      <h2>Settings</h2>
+      <label>Spreadsheet ID
+        <input id="spreadsheetId" placeholder="paste Spreadsheet ID here" />
+      </label>
+      <label>API Key
+        <input id="apiKey" placeholder="paste API key here" />
+      </label>
+      <div class="row">
+        <button id="saveBtn">Save & Load</button>
+        <button id="clearSavedBtn" class="muted">Clear Saved</button>
+        <button id="reloadBtn" class="muted">Reload Data</button>
+        <button id="testAlarmBtn" class="muted">Test Alarm</button>
+      </div>
+      <p class="hint">Make sure your sheet has two tabs named <strong>Schedule</strong> and <strong>History</strong>.</p>
+    </section>
+
+
+    <section class="grid">
+      <div class="card" id="scheduleCard">
+        <h2>Scheduled Intake (Upcoming)</h2>
+        <div id="scheduleWrap">Loading schedule…</div>
+
+
+        <hr style="margin:12px 0">
+
+
+        <h3>Add / Schedule Medicine</h3>
+        <form id="addForm" class="add-form">
+          <div class="row-col">
+            <label>Medicine name
+              <input id="add_medicine" required placeholder="e.g., Metformin" />
+            </label>
+            <label>Dose
+              <input id="add_dose" placeholder="e.g., 500 mg" />
+            </label>
+          </div>
+          <div class="row-col">
+            <label>Start date
+              <input id="add_date" type="date" required />
+            </label>
+            <label>Time
+              <input id="add_time" type="time" required />
+            </label>
+          </div>
+          <div class="row-col">
+            <label>Interval (hours)
+              <input id="add_interval" type="number" min="0" step="1" placeholder="0 = single schedule" />
+            </label>
+            <label>Generate for days
+              <input id="add_days" type="number" min="1" step="1" value="7" />
+            </label>
+          </div>
+          <label>Notes
+            <input id="add_notes" placeholder="e.g., after food" />
+          </label>
+          <div class="row" style="margin-top:8px">
+            <button id="addBtn" type="submit">Add & Schedule</button>
+            <button id="clearLocalScheduleBtn" type="button" class="muted">Clear Local Schedule</button>
+          </div>
+        </form>
+      </div>
+
+
+      <div class="card" id="historyCard">
+        <h2>Detailed History</h2>
+        <div id="historyWrap">Loading history…</div>
+        <div style="margin-top:8px">
+          <button id="historyToggleBtn" class="muted">Show more</button>
+        </div>
+      </div>
+
+
+      <div class="card" id="statsCard">
+        <h2>Statistics</h2>
+        <div id="statsWrap">Loading stats…</div>
+      </div>
+    </section>
+
+
+    <section class="card" id="logCard">
+      <h2>Log / Messages</h2>
+      <div id="message">Ready</div>
+    </section>
+  </main>
+
+
+  <footer class="footer">
+    <small>Uses Google Sheets REST API (read-only). Local-only alarm checks and simulated intake popup. Local scheduling persists in your browser only.</small>
+  </footer>
+
+
+  <div id="alarmModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <button class="close-modal" id="modalCloseBtn" title="Close">&times;</button>
+      <h3 id="modalTitle">Time to take medicine</h3>
+      <div id="modalBody">
+        <p><strong id="modalMed">Medicine</strong> — <span id="modalDose">Dose</span></p>
+        <p><small id="modalNotes"></small></p>
+        <p><small id="modalWhen"></small></p>
+      </div>
+
+
+      <div class="modal-actions">
+        <button id="confirmIntakeBtn">Confirm Intake</button>
+        <button id="snoozeBtn" class="muted">Snooze 5 min</button>
+      </div>
+      <div class="countdown" id="modalCountdown">Time left: 03:00</div>
+    </div>
+  </div>
+
+
+  <audio id="alarmSound" preload="auto">
+    <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=" type="audio/wav">
+  </audio>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
